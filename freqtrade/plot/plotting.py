@@ -65,14 +65,26 @@ def add_indicators(fig, row, indicators: List[str], data: pd.DataFrame) -> make_
     """
     for indicator in indicators:
         if indicator in data:
+            #specific trace for rsi indicator
+            if indicator == 'rsi':
+                fig.add_trace(
+                    go.Scatter(
+                        x=data['date'],
+                        y=data[indicator].values,
+                        mode="lines",
+                        name="RSI"
+                    ),
+                    row=3, col=1
+                )
             # TODO: Figure out why scattergl causes problems
-            scattergl = go.Scatter(
-                x=data['date'],
-                y=data[indicator].values,
-                mode='lines',
-                name=indicator
-            )
-            fig.add_trace(scattergl, row, 1)
+            else:
+                scattergl = go.Scatter(
+                    x=data['date'],
+                    y=data[indicator].values,
+                    mode='lines',
+                    name=indicator
+                )
+                fig.add_trace(scattergl, row, 1)
         else:
             logger.info(
                 'Indicator "%s" ignored. Reason: This indicator is not found '
