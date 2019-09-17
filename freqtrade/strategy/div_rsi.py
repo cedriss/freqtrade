@@ -17,13 +17,13 @@ class DivRSIStrategy(IStrategy):
     # Optimal stoploss designed for the strategy
     stoploss = -0.03
     
-    minimal_roy = {
-       "0": 0.03
+    minimal_roi = {
+       "0": 0.1
     }
     
     precision =0.99
     
-    osLevel = 33
+    osLevel = 25    
     
     timeframe_trend = 'W'
 
@@ -98,7 +98,7 @@ class DivRSIStrategy(IStrategy):
         
         oldminprice = 0 
         oldminrsi = 100
-        
+        oldminrsibar = 0
         bullish_df = dataframe.loc[dataframe['close'] > dataframe['ma_longterm']]
         for index, row in dataframe.iterrows():
             irsi = dataframe['rsi'][index]
@@ -111,7 +111,7 @@ class DivRSIStrategy(IStrategy):
                 
             
             if qtpylib.crossed_above(dataframe['rsi'], self.osLevel)[index]:
-                div = minprice < oldminprice and minrsi > oldminrsi
+                div = minprice < oldminprice and minrsi > oldminrsi and minrsibar - oldminrsibar > 200
                 if div:
                     #send a buy signal
                     dataframe.loc[index, 'buy']= 1
@@ -145,8 +145,8 @@ class DivRSIStrategy(IStrategy):
         :param metadata: Additional information, like the currently traded pair
         :return: DataFrame with buy column
         """
-        dataframe.loc[
-            dataframe['close'] > dataframe['bb_upper']
-            ,'sell'] =1
+        #dataframe.loc[
+        #   dataframe['close'] > dataframe['bb_upper']
+        #    ,'sell'] =1
         return dataframe
         
