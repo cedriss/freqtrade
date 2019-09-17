@@ -38,7 +38,7 @@
       "rateLimit": 500
     },
     "pair_whitelist": [
-      "ETH/BTC"
+      "BTC/USDT"
     ],
     "pair_blacklist": ["DOGE/BTC"]
   },
